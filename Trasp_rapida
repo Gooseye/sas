@@ -1,0 +1,44 @@
+void trasp_rapida(Tripla* a, Tripla* b){
+    /*Dichiarazione variabili*/
+    int num_col = 0;
+    int num_val = 0;
+    int i = 0;
+    int cur_pos = 0;
+    int* termini_riga = NULL;
+    int* pos_iniziale = NULL;
+
+    /*Inizializzazione prima tripla*/
+    num_col = a[0].col;
+    num_val = a[0].valore;
+    b[0].riga = num_col;
+    b[0].col = a[0].riga;
+    b[0].valore = num_val;
+
+    /*Allocazione dinamica*/
+    termini_riga = (int*)malloc(sizeof(int) * num_col);
+    pos_iniziale = (int*)malloc(sizeof(int) * num_col);
+
+    /*Svolgimento*/
+    if(num_val > 0){
+        //Creazione termini_riga
+        for(i = 0; i <= num_col - 1; i++)
+            termini_riga[i] = 0;
+        for(i = 1; i <= num_val; i++)
+            termini_riga[a[i].col] = termini_riga[a[i].col] + 1;
+
+        //Creazione pos_iniziale
+        pos_iniziale[0] = 1;
+        for(i = 1; i <= num_col - 1; i++)
+            pos_iniziale[i] = pos_iniziale[i - 1] + termini_riga[i - 1];
+
+        //Trasposizione
+        for(i = 1; i <= num_val; i++){
+            cur_pos = pos_iniziale[a[i].col];
+            pos_iniziale[a[i].col] = pos_iniziale[a[i].col] + 1;
+            b[cur_pos].riga = a[i].col;
+            b[cur_pos].col = a[i].riga;
+            b[cur_pos].valore = a[i].valore;
+        }
+    }
+
+}
